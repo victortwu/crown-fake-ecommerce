@@ -15,3 +15,9 @@ const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => {
 }
 
 export default withRouter(MenuItem)
+
+// above the withRouter() function from react router dom accepts MenuItem component and does some stuff to it and returns a new component having accessed properties from the history object.
+
+// https://v5.reactrouter.com/web/api/withRouter
+
+// You can get access to the history object’s properties and the closest <Route>'s match via the withRouter higher-order component. withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
