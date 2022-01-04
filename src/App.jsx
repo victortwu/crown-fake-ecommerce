@@ -23,10 +23,25 @@ class App extends React.Component {
   unsubscribeFromAuth = null
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async user => {
-     createUserProfileDocument(user)
-      // this.setState( { currentUser: user } )
-      // console.log(user)
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      
+      if ( userAuth ) {
+        // getting the documentRefObject
+        const userRef = await createUserProfileDocument(userAuth)
+        // getting back documentSnapShotObject --> has an 'exists: boolean' prop among others
+        userRef.onSnapshot(snapShot => {
+          //console.log('here is JUST snapShot Obj...', snapShot, 'here is snapShot.data()...', snapShot.data())
+         // set state by creating new object with the id from snapShot and the data from snapShot.data()
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          })
+        })
+      }
+
+      this.setState({ currentUser: userAuth })
     })
   }
 
