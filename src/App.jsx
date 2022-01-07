@@ -5,10 +5,12 @@ import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUp from './pages/sign-in-and-signup-page/sign-in-and-sign-up-page.component';
 
+// from redux config files
 import { setCurrentUser } from './redux/user/users.actions'
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 import { Route, Switch, Redirect } from 'react-router-dom'
+// from react-redux library
 import { connect } from 'react-redux' 
 
 import './App.css';
@@ -18,7 +20,7 @@ class App extends React.Component {
   
   
   unsubscribeFromAuth = null
-
+  
   componentDidMount() {
 
     const { setCurrentUser } = this.props
