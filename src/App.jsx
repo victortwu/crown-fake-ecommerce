@@ -1,4 +1,5 @@
 import React from 'react'
+import { createStructuredSelector } from 'reselect';
 
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
@@ -7,6 +8,7 @@ import SignInAndSignUp from './pages/sign-in-and-signup-page/sign-in-and-sign-up
 
 // from redux config files
 import { setCurrentUser } from './redux/user/users.actions'
+import { selectCurrentUser } from './redux/user/users.selectors';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 import { Route, Switch, Redirect } from 'react-router-dom'
@@ -80,9 +82,9 @@ class App extends React.Component {
 
 }
 
-const mapStateToProps = ({ user }) => {
-  return { currentUser: user.currentUser }
-}
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
+})
 
 const mapDispatchToProps = dispatch => {
   return {                            // action object passed into dispatch()
