@@ -2,9 +2,9 @@ import React from 'react'
 
 import CollectionItem from '../../components/collection-item/collection-item.component'
 
-import './category.styles.scss'
-
-const CategoryPage = () => {
+import './collection.styles.scss'
+                        // match is coming from <Route />
+const CollectionPage = ( { match } ) => {
     return(
         <div className="category">
             <h2>category page</h2>
@@ -12,4 +12,4 @@ const CategoryPage = () => {
     )
 }
 
-export default CategoryPage
+export default CollectionPage
