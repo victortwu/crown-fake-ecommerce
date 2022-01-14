@@ -2,6 +2,7 @@ import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
 import 'firebase/compat/auth'
 
+// this config object is from firebase account setup
 const config = {
     apiKey: "AIzaSyBJufmEfcpl8UiNrbK8_YRtGJZgD_MuFAo",
     authDomain: "fake-react-ecomm.firebaseapp.com",
@@ -16,9 +17,9 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     if ( !userAuth ) return
 
     const userRef = firestore.doc(`users/${userAuth.uid}`)
-    
+   
     const snapShot = await userRef.get()
-    //console.log(userRef)
+  
     if ( !snapShot.exists ) { // <-- if no user exists, create a new one
         const { displayName, email } = userAuth
         const createdAt = new Date()
@@ -35,6 +36,36 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         }
     }
     return userRef // <-- if user ALREADY exists, just return it
+}
+
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = firestore.collection(collectionKey)
+    console.log(collectionRef)
+
+    // put it in a batch obj that comes with firestore so if one peice of data fails, the whole thing fails
+    const batch = firestore.batch()
+    objectsToAdd.forEach(obj => {
+        const newDocRef = collectionRef.doc()
+        batch.set(newDocRef, obj)
+    })
+    return await batch.commit()
+}
+
+export const convertCollectionsSnapshotToMap = (collections) => {
+    const transformedCollection = collections.docs.map(doc => {
+        const { title, items } = doc.data()
+        return {
+            routeName: encodeURI(title.toLowerCase()),
+            id: doc.id,
+            title,
+            items
+        }
+    })
+    
+    return transformedCollection.reduce((acc, collection) => {
+        acc[collection.title.toLowerCase()] = collection
+        return acc
+    }, {})
 }
 
 firebase.initializeApp(config)
