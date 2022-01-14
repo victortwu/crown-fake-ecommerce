@@ -14,6 +14,7 @@ const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview)
 const CollectionPageWithSpinner = WithSpinner(CollectionPage)
 
 class ShopPage extends React.Component {
+    // newer react version allows you to skip the constructor() and super(), thus the state syntax below
     state = {
         loading: true
     }
@@ -24,11 +25,22 @@ class ShopPage extends React.Component {
         const { updateCollections } = this.props  
         const collectionRef = firestore.collection('collections')
 
-        this.unsubscribeFromSnapshot = collectionRef.onSnapshot(async snapshot => {
+        // observer pattern
+       
+        // this.unsubscribeFromSnapshot = collectionRef.onSnapshot(async snapshot => {
+        //     const collectionsMap = convertCollectionsSnapshotToMap(snapshot)
+        //     updateCollections(collectionsMap)
+        //     this.setState({ loading: false })
+        // })
+
+        // or asyncronous type call (can use fetch with a url from firebase but documents are deeply nested)
+
+        collectionRef.get().then( snapshot => {
             const collectionsMap = convertCollectionsSnapshotToMap(snapshot)
             updateCollections(collectionsMap)
             this.setState({ loading: false })
         })
+
     }
 
     render() {
