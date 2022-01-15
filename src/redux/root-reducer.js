@@ -21,3 +21,4 @@ const rootReducer = combineReducers({
 })
 
 export default persistReducer(persistConfig, rootReducer)
+// persistReducer Method from redux-persist and storage are a library that stores what you configure into the browser's localStorage (native javaScript)
