@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createStructuredSelector } from 'reselect';
 
 import HomePage from './pages/homepage/homepage.component';
@@ -8,11 +8,10 @@ import Header from './components/header/header.component';
 import SignInAndSignUp from './pages/sign-in-and-signup-page/sign-in-and-sign-up-page.component';
 
 // from redux config files
-import { setCurrentUser } from './redux/user/users.actions'
+
 import { selectCurrentUser } from './redux/user/users.selectors';
+import { checkUserSession } from './redux/user/users.actions'
 
-
-import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 import { Route, Switch, Redirect } from 'react-router-dom'
 // from react-redux library
 import { connect } from 'react-redux' 
@@ -20,45 +19,15 @@ import { connect } from 'react-redux'
 import './App.css';
 
 
-class App extends React.Component {
+const App = ( { checkUserSession, currentUser } ) =>  {
   
+ 
   
-  unsubscribeFromAuth = null
+  useEffect(()=> {
+    checkUserSession()
+  }, [])
+
   
-  componentDidMount() {
-
-    const { setCurrentUser } = this.props
-
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      
-      if ( userAuth ) {
-        // getting the documentRefObject
-        const userRef = await createUserProfileDocument(userAuth)
-        // getting back documentSnapShotObject --> has an 'exists: boolean' prop among others
-        userRef.onSnapshot(snapShot => {
-          //console.log('here is JUST snapShot Obj...', snapShot, 'here is snapShot.data()...', snapShot.data())
-         // set state by creating new object with the id from snapShot and the data from snapShot.data()
-          setCurrentUser(
-            {
-              id: snapShot.id,
-              ...snapShot.data()
-            }
-          )
-        
-        })
-      }
-
-      setCurrentUser(userAuth)
-
-      
-    })
-  }
-
-  componentWillUnmount() {
-    this.unsubscribeFromAuth()
-  }
-
-  render() {
     
     return (
       <div className="App">
@@ -71,7 +40,7 @@ class App extends React.Component {
               exact path='/signin' 
               render={()=> {
                 return(
-                  this.props.currentUser ?
+                  currentUser ?
                   <Redirect to ='/'/>
                   :
                   <SignInAndSignUp/>
@@ -85,17 +54,40 @@ class App extends React.Component {
     );
   }
 
-}
+
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
- 
-})
+ })
 
-const mapDispatchToProps = dispatch => {
-  return {                            // action object passed into dispatch()
-    setCurrentUser: user => dispatch(setCurrentUser(user))
-  }
-}
+ const mapDispatchToProps = dispatch => {
+   return {
+     checkUserSession: ()=> dispatch(checkUserSession())
+   }
+ }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+    // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      
+    //   if ( userAuth ) {
+    //     // getting the documentRefObject
+    //     const userRef = await createUserProfileDocument(userAuth)
+    //     // getting back documentSnapShotObject --> has an 'exists: boolean' prop among others
+    //     userRef.onSnapshot(snapShot => {
+    //       //console.log('here is JUST snapShot Obj...', snapShot, 'here is snapShot.data()...', snapShot.data())
+    //      // set state by creating new object with the id from snapShot and the data from snapShot.data()
+    //       setCurrentUser(
+    //         {
+    //           id: snapShot.id,
+    //           ...snapShot.data()
+    //         }
+    //       )
+        
+    //     })
+    //   }
+
+    //   setCurrentUser(userAuth)
+
+      
+    // })
