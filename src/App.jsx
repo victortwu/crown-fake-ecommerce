@@ -21,15 +21,11 @@ import './App.css';
 
 const App = ( { checkUserSession, currentUser } ) =>  {
   
- 
-  
   useEffect(()=> {
     checkUserSession()
   }, [])
 
-  
-    
-    return (
+  return (
       <div className="App">
         <Header />
         <Switch>
