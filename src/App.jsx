@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import { createStructuredSelector } from 'reselect';
+import { AnimatePresence } from 'framer-motion'
+
 
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
@@ -12,7 +14,7 @@ import SignInAndSignUp from './pages/sign-in-and-signup-page/sign-in-and-sign-up
 import { selectCurrentUser } from './redux/user/users.selectors';
 import { checkUserSession } from './redux/user/users.actions'
 
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
 // from react-redux library
 import { connect } from 'react-redux' 
 
@@ -21,6 +23,8 @@ import './App.css';
 
 const App = ( { checkUserSession, currentUser } ) =>  {
   
+  const location = useLocation()
+
   useEffect(()=> {
     checkUserSession()
   }, [checkUserSession])
@@ -28,27 +32,30 @@ const App = ( { checkUserSession, currentUser } ) =>  {
   return (
       <div className="App">
         <Header />
-        <Switch>
-            <Route exact path='/' component={HomePage}/>
-            <Route path='/shop' component={ShopPage}/>
-            <Route exact path='/checkout' component={CheckoutPage}/>
-            <Route 
-              exact path='/signin' 
-              render={()=> {
-                return(
-                  currentUser ?
-                  <Redirect to ='/'/>
-                  :
-                  <SignInAndSignUp/>
-                  )
+        <AnimatePresence>
+          <Switch location={location} key={location.key}>
+              <Route exact path='/' component={HomePage}/>
+              <Route path='/shop' component={ShopPage}/>
+              <Route exact path='/checkout' component={CheckoutPage}/>
+              <Route 
+                exact path='/signin' 
+                render={()=> {
+                  return(
+                    currentUser ?
+                    <Redirect to ='/'/>
+                    :
+                    <SignInAndSignUp/>
+                    )
+                  }
                 }
-              }
-            />
-        </Switch>
+              />
+          </Switch>
+        </AnimatePresence>
       
       </div>
     );
   }
+
 
 
 

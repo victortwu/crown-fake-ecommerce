@@ -1,14 +1,25 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 
 import Directory from '../../components/directory/directory.component'
 
-import { HomePageContainer } from './homepage.styles'
+import { containerVariants } from '../../animation-rules/pageVariants.animations'
+import './homepage.styles.scss'
 
 const HomePage = () => {
+    const { visible, hidden, exit } = containerVariants
+
+    console.log(hidden)
     return(
-    <HomePageContainer>
+    <motion.div 
+        className='homepage'
+        variants={containerVariants}
+        initial='hidden'
+        animate='visible'
+        exit='exit'
+        >
         <Directory />
-    </HomePageContainer>
+    </motion.div>
     )
 }
 
