@@ -1,17 +1,21 @@
 import React from 'react' 
-import { connect } from 'react-redux' 
-import { createStructuredSelector } from 'reselect'
-import { withRouter } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux' 
+import { useHistory } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'  
 
 import CustomButton from '../custom-button/custom-button.component'
 import CartItem from '../cart-item/cart-item.component'
 import { selectCartItems } from '../../redux/cart/cart.selectors'
-import {  toggleCartHidden } from '../../redux/cart/cart.actions.js' 
+import { toggleCartHidden } from '../../redux/cart/cart.actions.js' 
 
 import './cart-dropdown.styles.scss'
 
-const CartDropdown = ( { cartItems, history, dispatch } ) => {
+const CartDropdown = () => {
+
+    const cartItems = useSelector(selectCartItems)
+    const dispatch = useDispatch()
+    const history = useHistory()
+
     return(
         <AnimatePresence>
             <motion.div 
@@ -46,8 +50,4 @@ const CartDropdown = ( { cartItems, history, dispatch } ) => {
     )
 }
 
-const mapStateToProps = createStructuredSelector({
-    cartItems: selectCartItems
-})
-   
-export default withRouter(connect(mapStateToProps)(CartDropdown))
+export default CartDropdown

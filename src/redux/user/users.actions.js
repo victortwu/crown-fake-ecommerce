@@ -22,6 +22,7 @@ export const signInFailure = error => {
 }
 
 export const emailSignInStart = (emailAndPassword) => {
+    console.log(emailAndPassword)
     return {
         type: UserActionTypes.EMAIL_SIGN_IN_START,
         payload: emailAndPassword
@@ -54,6 +55,7 @@ export const signOutFailure = (err) => {
 }
 
 export const signUpStart = (userCredentials) => {
+    
     return {
         type: UserActionTypes.SIGN_UP_START,
         payload: userCredentials

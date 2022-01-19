@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { motion } from 'framer-motion'
 
 import CollectionPageContainer from "../collection/collection.container";
@@ -12,13 +12,13 @@ import { containerVariants } from "../../animation-rules/pageVariants.animations
 import './shop.styles.scss'
 
                                               // match from react router
-const ShopPage = ( { fetchCollectionsStart, match } ) => {
+const ShopPage = ( {  match } ) => {
   
-    const { hidden, visible, exit } = containerVariants
+   const dispatch = useDispatch()
 
     useEffect(()=> {
-        fetchCollectionsStart() 
-    }, [fetchCollectionsStart]) 
+        dispatch(fetchCollectionsStart()) 
+    }, [dispatch]) 
        
     return(
         <motion.div 
@@ -34,14 +34,7 @@ const ShopPage = ( { fetchCollectionsStart, match } ) => {
         )
 }
 
-
-const mapDispatchToProps = dispatch => {
-    return {
-        fetchCollectionsStart: ()=> dispatch(fetchCollectionsStart())
-    }
-}
-
-export default connect(null, mapDispatchToProps)(ShopPage)
+export default ShopPage
                
 
 

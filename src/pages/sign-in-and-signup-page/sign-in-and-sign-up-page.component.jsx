@@ -9,8 +9,6 @@ import './sign-in-and-sign-up-page.styles.scss'
 
 const SignInAndSignUp = () => {
 
-    const { hidden, visible, exit } = containerVariants
-
     return(
         <motion.div 
             className="sign-in-and-sign-up"

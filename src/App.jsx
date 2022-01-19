@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { createStructuredSelector } from 'reselect';
 import { AnimatePresence } from 'framer-motion'
 
 
@@ -16,18 +15,21 @@ import { checkUserSession } from './redux/user/users.actions'
 
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
 // from react-redux library
-import { connect } from 'react-redux' 
+import { useSelector, useDispatch } from 'react-redux' 
 
 import './App.css';
 
 
-const App = ( { checkUserSession, currentUser } ) =>  {
+const App = () =>  { // not using connect HOC from redux anymore so no need to pass in state
+  
+  const currentUser = useSelector(selectCurrentUser) // replaces mapStateToProps
+  const dispatch = useDispatch() // replaces mapDispatchToProps
   
   const location = useLocation()
 
   useEffect(()=> {
-    checkUserSession()
-  }, [checkUserSession])
+    dispatch(checkUserSession())
+  }, [dispatch])
 
   return (
       <div className="App">
@@ -56,20 +58,20 @@ const App = ( { checkUserSession, currentUser } ) =>  {
     );
   }
 
+  // const mapStateToProps = createStructuredSelector({
+  //   currentUser: selectCurrentUser,
+  //  })
+  
+  //  const mapDispatchToProps = dispatch => {
+  //    return {
+  //      checkUserSession: ()=> dispatch(checkUserSession())
+  //    }
+  //  }
+  
+  export default App;
 
 
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
- })
-
- const mapDispatchToProps = dispatch => {
-   return {
-     checkUserSession: ()=> dispatch(checkUserSession())
-   }
- }
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
 
     // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       

@@ -7,9 +7,7 @@ import { containerVariants } from '../../animation-rules/pageVariants.animations
 import './homepage.styles.scss'
 
 const HomePage = () => {
-    const { visible, hidden, exit } = containerVariants
-
-    console.log(hidden)
+ 
     return(
     <motion.div 
         className='homepage'
