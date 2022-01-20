@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
- 
+import { AnimatePresence, motion } from 'framer-motion'
 
 import CartIcon from '../cart-icon/cart-icon.component'
 import CartDropdown from '../cart-dropdown/cart-dropdown.component'
@@ -11,14 +11,17 @@ import { signOutStart } from '../../redux/user/users.actions'
 
 import { ReactComponent as Logo } from '../../assets/crown.svg'
 
-
-import { HeaderContainer, 
+import { dropdownVariants } from '../../animation-rules/pageVariants.animations'
+import { 
+        HeaderContainer, 
         LogoContainer, 
         OptionsContainer, 
-        OptionLink } from './header.styles'
+        OptionLink,
+       } from './header.styles'
 
 const Header = ({ currentUser, hidden, signOutStart }) => {
     return(
+        <>
         <HeaderContainer>
             <LogoContainer to='/'>
                 <Logo className='logo' />
@@ -38,12 +41,26 @@ const Header = ({ currentUser, hidden, signOutStart }) => {
                 }
                 <CartIcon/>
             </OptionsContainer>
-            
-                {hidden ? null : <CartDropdown/>}
+        
         </HeaderContainer>
+        <div style={{position: 'absolute', right: '0', zIndex: '1'}}>
+            <AnimatePresence>
+            {hidden && (<motion.div
+                                variants={dropdownVariants}
+                                key='cart-dropdown'
+                                initial='hidden'
+                                animate='visible'
+                                exit='exit'
+                                >
+                            <CartDropdown/>
+                        </motion.div>)}
+            </AnimatePresence>
+        </div>
+        </>
     )
 }
 
+// This is a NON Redux hooks example utilizing the connect() HOC to pass in props from redux store
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
     hidden: selectCartHidden
@@ -56,3 +73,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)
+                        

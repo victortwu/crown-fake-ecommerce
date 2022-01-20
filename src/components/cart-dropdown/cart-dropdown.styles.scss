@@ -7,9 +7,10 @@
     padding: 20px;
     border: 1px solid black;
     background-color: white;
-    top: 90px;
+    top: -25px;
     right: 40px;
-    z-index: 5;
+    z-index: 1;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
     .empty-message {
       font-size: 18px;
