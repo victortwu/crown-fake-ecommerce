@@ -1,6 +1,8 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react' 
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+
 
 import CheckoutItem from '../../components/checkout-item/checkout-item.component'
 import StripeCheckoutButton from '../../components/stripe-button/stripe-button.component'
@@ -29,11 +31,15 @@ const CheckoutPage = ( { cartItems, total } ) => {
                    <span>Remove</span>
                </div>
            </div>
+            <AnimatePresence>
            {
                cartItems.map(cartItem=> {
-                   return <CheckoutItem key={cartItem.id} cartItem={cartItem} />
+                   return <motion.div key={cartItem.id} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                                <CheckoutItem key={cartItem.id} cartItem={cartItem} />
+                            </motion.div>
                })
            }
+           </AnimatePresence>
            <div className="total">
                <span>TOTAL: ${total}</span>
            </div>

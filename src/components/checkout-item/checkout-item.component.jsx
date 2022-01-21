@@ -8,7 +8,7 @@ import './checkout-item.styles.scss'
 const CheckoutItem = ( { cartItem, clearItem, addItem, removeItem } ) => {
     const { name, imageUrl, price, quantity } = cartItem
     return(
-        <div className="checkout-item">
+        <div className="checkout-item" initial={{opacity:0}} animate={{opacity: 1}} exit={{opacity: 0}}>
             <div className="image-container">
                 <img src={imageUrl} alt='item'/>
             </div>
@@ -33,3 +33,5 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(null, mapDispatchToProps)(CheckoutItem)
+       
+        

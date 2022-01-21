@@ -25,6 +25,20 @@
       display: none;
     }
 
+    .added-message {
+      text-align: center;
+      position: absolute;
+      width: 100%;
+      height: 50px;
+      top: 255px;
+
+      span {
+        color: white;
+        font-size: large;
+        font-weight: 800;
+      }
+    }
+
     &:hover {
       .image {
         opacity: .8;
