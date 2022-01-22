@@ -8,10 +8,12 @@ import CheckoutItem from '../../components/checkout-item/checkout-item.component
 import StripeCheckoutButton from '../../components/stripe-button/stripe-button.component'
 
 import { selectCartTotal, selectCartItems } from '../../redux/cart/cart.selectors'
+import { clearCart } from '../../redux/cart/cart.actions'
 
 import './checkout.styles.scss'
+import CustomButton from '../../components/custom-button/custom-button.component'
 
-const CheckoutPage = ( { cartItems, total } ) => {
+const CheckoutPage = ( { cartItems, total, clearCart } ) => {
     return(
         <div className="checkout-page">
            <div className="checkout-header">
@@ -43,6 +45,9 @@ const CheckoutPage = ( { cartItems, total } ) => {
            <div className="total">
                <span>TOTAL: ${total}</span>
            </div>
+           <CustomButton onClick={clearCart}>
+               Clear Cart
+           </CustomButton>
            <div className="test-warning">
                Please use the following TEST credit card for payments
                <br/>
@@ -58,4 +63,10 @@ const mapStateToProps = createStructuredSelector({
     total: selectCartTotal
 })
 
-export default connect(mapStateToProps)(CheckoutPage)
+const mapDispatchToProps = dispatch => {
+    return {
+        clearCart: ()=> dispatch(clearCart())
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(CheckoutPage)

@@ -14,18 +14,22 @@ import { ReactComponent as Logo } from '../../assets/crown.svg'
 import { dropdownVariants } from '../../animation-rules/pageVariants.animations'
 import { 
         HeaderContainer, 
-        LogoContainer, 
+        LogoContainer,
         OptionsContainer, 
         OptionLink,
        } from './header.styles'
 
 const Header = ({ currentUser, hidden, signOutStart }) => {
+  
     return(
         <>
         <HeaderContainer>
             <LogoContainer to='/'>
                 <Logo className='logo' />
             </LogoContainer>
+
+            {currentUser && <div>HI {currentUser.displayName.toUpperCase()}!</div>}
+
             <OptionsContainer>
                 <OptionLink to='/shop'>
                     SHOP
