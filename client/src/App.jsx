@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, lazy, Suspense } from 'react'
 import { AnimatePresence } from 'framer-motion'
 
-
-import HomePage from './pages/homepage/homepage.component';
-import ShopPage from './pages/shop/shop.component';
-import CheckoutPage from './pages/checkout/checkout.component';
 import Header from './components/header/header.component';
-import SignInAndSignUp from './pages/sign-in-and-signup-page/sign-in-and-sign-up-page.component';
+import ErrorBoundary from './components/error-boundary/error-boundary.component';
+
+// regular importing of components commented out
+
+//import HomePage from './pages/homepage/homepage.component';
+// import ShopPage from './pages/shop/shop.component';
+// import CheckoutPage from './pages/checkout/checkout.component';
+// import SignInAndSignUp from './pages/sign-in-and-signup-page/sign-in-and-sign-up-page.component';
 
 // from redux config files
 
@@ -19,6 +22,11 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import './App.css';
 
+// lazy loading pages to split the code, this method can also leverage <Route/> by wrrapping with <Suspense /> component
+const HomePage = lazy(() => import('./pages/homepage/homepage.component'))
+const ShopPage = lazy(() => import('./pages/shop/shop.component'))
+const CheckoutPage = lazy(() =>import('./pages/checkout/checkout.component'))
+const SignInAndSignUp = lazy(() => import('./pages/sign-in-and-signup-page/sign-in-and-sign-up-page.component'))
 
 const App = () =>  { // not using connect HOC from redux anymore so no need to pass in state
   
@@ -36,9 +44,15 @@ const App = () =>  { // not using connect HOC from redux anymore so no need to p
         <Header />
         <AnimatePresence>
           <Switch location={location} key={location.key}>
+            <ErrorBoundary>
+            <Suspense fallback={<div>loading...</div>}>
+              
               <Route exact path='/' component={HomePage}/>
+           
               <Route path='/shop' component={ShopPage}/>
+          
               <Route exact path='/checkout' component={CheckoutPage}/>
+            
               <Route 
                 exact path='/signin' 
                 render={()=> {
@@ -51,6 +65,9 @@ const App = () =>  { // not using connect HOC from redux anymore so no need to p
                   }
                 }
               />
+            
+            </Suspense>  
+            </ErrorBoundary>
           </Switch>
         </AnimatePresence>
       

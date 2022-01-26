@@ -7,7 +7,7 @@ import { containerVariants } from '../../animation-rules/pageVariants.animations
 import './homepage.styles.scss'
 
 const HomePage = () => {
- 
+    
     return(
     <motion.div 
         className='homepage'
