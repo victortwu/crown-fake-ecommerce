@@ -36,7 +36,7 @@ const CheckoutPage = ( { cartItems, total, clearCart } ) => {
             <AnimatePresence>
            {
                cartItems.map(cartItem=> {
-                   return <motion.div key={cartItem.id} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                   return <motion.div className='checkout-item-container' key={cartItem.id} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                                 <CheckoutItem key={cartItem.id} cartItem={cartItem} />
                             </motion.div>
                })
